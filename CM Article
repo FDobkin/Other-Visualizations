@@ -1,0 +1,28 @@
+#Create Labels
+text=c("Imperial", "Los Angeles", "San Francisco", "Orange", "Alpine", "Fresno",
+       "San Joaquin", "Modoc", "Riverside", "Alameda", "Tulare", "Kern", "Monterey",
+       "Stanislaus", "Santa Barbara", "Napa", "San Diego", "Placer", "San Bernardino")
+
+#Plot Creation
+ggplot(data=ind, aes(x=uni, y=pfh, colour = quartile)) + 
+  geom_point(position = "jitter", shape = 20, fill = "White", size = 1, stroke = 1.5) +
+  geom_smooth(method = "lm", formula = y~poly(x,2), size = 1, color = "black", se = TRUE) +
+  geom_text(data=ind[ind$County %in% text,], aes(label = County), size = 3, color = "Black") +
+annotate("text", x=5, y=25, label="R2=0.467", size = 3) +
+  labs(title="Relationship between Uninsured Rate and Quality of Health",
+       subtitle="California Counties in 2018",
+       caption="Data from California Department of Public Health",
+       colour="Poverty Quartile",
+        x="Percent Uninsured",
+        y="Mean Poor or Fair Health Days") +
+  theme(plot.title=element_text(size=10, face="bold"),
+        plot.subtitle=element_text(size=8, face="italic"),
+        plot.caption=element_text(size=8),
+        axis.title=element_text(size=9, face="bold"),
+        axis.text.y=element_text(size = 6, face="bold"),
+        axis.ticks.y=element_blank(),
+        axis.text.x=element_text(size = 6, face="bold"),
+        axis.ticks.x=element_blank(),
+        panel.background = element_blank(),
+        legend.title = element_text(size = 9, face = "bold"),
+         axis.line = element_line(colour = "black")) 
