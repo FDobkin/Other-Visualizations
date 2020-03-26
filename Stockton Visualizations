@@ -1,0 +1,102 @@
+#Plot of Income changes over time in Stockton, California, and the United States
+ ggplot(inc_data, aes(x = date), alpha = I(1 / 1.5), size = 2) +
+  geom_line(aes(y=inc_usa, colour = "United States"), alpha = I(1 / 1.5)) +
+  geom_line(aes(y=inc_ca, colour = "California"), alpha = I(1 / 1.5)) +
+  geom_line(aes(y=inc_stockton, colour = "Stockton"), alpha = I(1 / 1.5)) +
+  scale_color_hue(l = 40) +
+  labs(
+      title = "Median Income by Location",
+      subtitle = "1997 to 2018",
+      x = "Year", 
+      y = "Median Income, Adjusted for 2018 CPI",
+      caption = "Source: Bureau of Labor Statistics",
+      colour = "Location") +
+ theme(
+   plot.title = element_text(size = 12, color = "grey10", face = "bold"),
+    strip.text = element_text(hjust = 0),
+    plot.subtitle = element_text(face = "italic", size = 10, color = "grey40"),
+    axis.title.x = element_text(size = 9, face = "bold"),
+    axis.title.y = element_text(size = 9, face = "bold"), 
+    legend.title=element_text(size=9, face = "bold"),
+    legend.text = element_text(size = 6),
+    legend.position = "bottom",
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid.minor = element_blank())
+    
+    
+#Plot of changes of financial security in Stockton over time
+    stock12 <- stock1 %>%
+          mutate(inc_hpi = med_inc / hpi) %>%
+          mutate(inc_ue = med_inc / ue_rate) %>%
+          mutate(inc_pov = med_inc / poverty)
+ggplot(data=stock12, aes(x=DATE)) +
+  geom_line(data=stock12, aes(y=inc_hpi, color = "Income to Housing Price Ratio"), alpha = I(1 / 1.5)) +
+  geom_line(data=stock12, aes(y=inc_pov, color = "Income to Poverty Ratio"), alpha = I(1 / 1.5))   +
+  geom_line(data=stock12, aes(y=inc_ue, color = "Income to Unemployment Ratio"), alpha = I(1 / 1.5)) +
+  geom_hline(yintercept=1) +
+  scale_color_hue(l = 40) +
+  labs(
+    title = "Changes in Economic Security Metrics",
+    subtitle = "1997 to 2017",
+    colour = "Metrics",
+    x = "Year",
+    y = "Scale",
+    caption = "Source: US Census Bureau and S&P Dow Jones Indices") +
+  ylim(.5,2.75) +
+  theme(
+   plot.title = element_text(size = 12, color = "grey10", face = "bold"),
+    strip.text = element_text(hjust = 0),
+    plot.subtitle = element_text(face = "italic", size = 10, color = "grey40"),
+    axis.title.x = element_text(size = 9, face = "bold"),
+    axis.title.y = element_text(size = 9, face = "bold"), 
+    legend.title=element_text(size=9, face = "bold"),
+    legend.text = element_text(size = 6),
+    legend.position = "bottom",
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid.minor = element_blank())
+    
+    
+    
+    
+ #Plot of changes in occupations in Stockton
+ ggplot(data = bls, aes(x=Year)) +
+  geom_line(aes(y=total_emp, colour = "Total Employment"), group = 1,alpha = I(1 / 1.5)) +
+  geom_line(aes(y=construction, colour = "Construction"), group = 1, alpha = I(1 / 1.5)) + 
+  geom_line(aes(y=manufacturing, colour = "Manufacturing"), group = 1, alpha = I(1 / 1.5)) +
+  geom_line(aes(y=finance, colour = "Finance", alpha = I(1 / 1.5), group = 1)) +
+  geom_line(aes(y=trade_trans_util, colour = "Trade, Transportation, and Utilities"), group = 1, alpha = I(1 / 1.5)) +
+  geom_line(aes(y=info, colour = "Information"), group = 1, alpha = I(1 / 1.5)) +
+  geom_line(aes(y=pro_bus_serv, colour = "Professional and Business Services"), group = 1, alpha = I(1 / 1.5)) +
+  geom_line(aes(y=educ_health, colour = "Education and Health"), group = 1, alpha = I(1 / 1.5)) +
+  geom_line(aes(y=leis_hospitality, colour = "Leisure and Hospitality"), group = 1, alpha = I(1 / 1.5)) +
+  geom_line(aes(y=other, colour = "Other"), group = 1, alpha = I(1 / 1.5)) +
+  geom_line(aes(y=govt, colour = "Government"), group = 1, alpha = I(1 / 1.5)) +
+  labs(x="Year",
+       y="Logarithmic Employment in Occupation Levels",
+       title="Employment Changes over Time",
+       subtitle="2009-2019",
+       caption="Source: Bureau of Labor Statistics",
+       colour = "Occupation Category") +
+   theme(
+    plot.title = element_text(size = 12, color = "grey10", face = "bold"),
+    strip.text = element_text(hjust = 0),
+    plot.subtitle = element_text(face = "italic", size = 10, color = "grey40"),
+    axis.title.x = element_text(size = 7, face = "bold"),
+    axis.title.y = element_text(size = 7, face = "bold"), 
+    legend.title=element_text(size=9, face = "bold"),
+    legend.text = element_text(size = 6),
+    legend.position = "bottom",
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.ticks = element_blank(),
+    plot.caption = element_text(size = 6),
+    panel.grid.minor = element_blank()) +
+  scale_color_hue(l = 40) +
+  scale_y_log10(breaks = c(1,3,10,32,90,250),
+                labels = c("1","3", "10","32", "90","250")) +
+  scale_x_discrete(breaks = c(2010, 2018),
+                    labels = c("2010", "2018"))
